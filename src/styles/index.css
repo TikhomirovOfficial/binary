@@ -1,0 +1,181 @@
+body {
+  background: #F5F5F5;
+}
+.WrapperForm {
+  padding: 45px 55px;
+  box-shadow: 0 0 30px rgba(0, 0, 0, 0.15);
+  border-radius: 20px;
+  width: 500px;
+}
+.inputForm {
+  padding: 13px;
+  font-size: 19px;
+}
+.errorForm {
+  color: red;
+}
+.header {
+  padding: 20px 100px;
+}
+.help {
+  margin-top: 40px;
+  text-decoration: underline;
+}
+.btn {
+  padding: 9px 30px;
+  font-size: 19px;
+  text-align: center;
+  width: fit-content;
+}
+.inputGenerate {
+  padding: 8px 13px;
+  background: blue;
+  text-align: center;
+  color: white;
+}
+.user-block {
+  gap: 60px;
+}
+.auction_control {
+  color: white;
+}
+.stop-auction input {
+  font-size: 18px;
+  padding: 10px;
+  width: 400px;
+}
+.brokersMenu {
+  background: #ffffff;
+  padding: 15px;
+  top: 110%;
+  min-width: 300px;
+  left: 0;
+  box-shadow: 0 0 15px rgba(0, 0, 0, 0.29);
+}
+.brokerName {
+  color: #484848;
+}
+.brokerItem {
+   min-width: 250px;
+}
+.addBroker {
+  margin-top: 30px;
+}
+.broker_btn {
+  font-size: 21px;
+  font-weight: 600;
+  padding: 3px;
+  background: blue;
+  color: white;
+}
+
+.broker_input {
+  max-width: 240px;
+  padding: 5px;
+  border: 1px solid black;
+}
+.brokerList > div {
+  padding: 0 10px;
+}
+.brokerList::-webkit-scrollbar {
+  width: 0
+}
+.brokersSave {
+  background: #0c9324;
+  color: white;
+  margin-top: 10px;
+}
+.brokerList {
+  max-height: 100px;
+  overflow: auto;
+}
+.deleteBroker {
+  color: red;
+  font-size: 12px;
+  cursor: pointer;
+}
+.user-info {
+  gap: 5px;
+}
+.user-info span {
+  font-weight: 300;
+}
+.inputWrapper input{
+  font-size: 18px;
+}
+.inputWrapper {
+  border-radius: 10px;
+  padding: 10px;
+  border: 1px solid gray;
+}
+.modal-create-user {
+  top: 0;
+  z-index: 90;
+  left: 0;
+  background: rgba(70, 70, 70, 0.53);
+}
+.auctionBlock {
+  background: #484848;
+  color: white;
+}
+.auctionContent__img {
+  width: 80px;
+}
+
+.adminPanel {
+  margin-top: 150px;
+}
+.subscribeInputs input{
+  width: 60px;
+  text-align: center;
+  border: 1px solid black;
+  font-size: 18px;
+}
+.add-user {
+  margin-top: 30px;
+}
+.users-list {
+  margin-top: 70px;
+}
+button:disabled {
+  background: #9f9d9d !important;
+}
+.user-item {
+  padding: 15px 50px;
+  gap: 50px;
+  box-shadow: 0 0 15px rgba(0, 0, 0, 0.18);
+}
+.panel {
+  font-size: 50px;
+  margin-bottom: 50px;
+}
+.wrapper {
+  margin: 0 auto;
+  max-width: 1320px;
+}
+.auctionProccess span:nth-child(3) {
+  animation: load infinite ease-out 10s;
+}
+.preload {
+  animation: 1s infinite linear spinner;
+}
+.headerAdmin {
+  padding-top: 50px;
+}
+@keyframes spinner {
+  0% {
+    transform: rotateZ(0);
+  }
+  25% {
+    transform: rotateZ(45deg);
+  }
+  50% {
+    transform: rotateZ(90deg);
+  }
+  75% {
+    transform: rotateZ(180deg);
+  }
+  100% {
+    transform: rotateZ(360deg);
+  }
+}

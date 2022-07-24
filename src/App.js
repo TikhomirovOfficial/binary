@@ -1,25 +1,39 @@
-import logo from './logo.svg';
-import './App.css';
+import React, {createContext, useEffect, useState} from 'react';
 
-function App() {
-  return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
-  );
-}
+import AppRoutes from "./components/routes/AppRoutes";
+import {CheckAuth} from "./utils/checkAuth";
+import Api from "./http/requests";
+import {checkSubscribeExpired} from "./utils/checkSubscribeExpired";
+
+
+export const UserContext = createContext({})
+
+const App = () => {
+    const [user, setUser] = useState({})
+
+    const logout = async() => {
+        await Api.logout()
+        window.location.href = '/login'
+    }
+    useEffect(() => {
+        CheckAuth().then((res) => {
+            setUser(res)
+        }).catch(() => {
+            setUser({
+                admin: false
+            })
+        })
+    }, [])
+    return (
+        <UserContext.Provider value={{user, logout}}>
+            {
+                Object.keys(user).length ?
+                <AppRoutes isAdmin={user.admin} isAuth={user?.accessToken}/> : null
+            }
+
+        </UserContext.Provider>
+
+    );
+};
 
 export default App;
