@@ -1,16 +1,23 @@
-import React, {useContext, useState} from 'react';
+import React, {useContext, useEffect, useState} from 'react';
 import WrapperBlock from "../components/WrapperBlock";
 import WrapperForm from "../components/WrapperForm";
 import AlertBlock from "../components/AlertBlock";
 import {UserContext} from "../App";
-import {Link} from "react-router-dom";
+import {Link, Navigate} from "react-router-dom";
+
+const isAuctionMember = localStorage.getItem('user_transanction')
 
 const Auction = () => {
     const {user, logout} = useContext(UserContext)
+
     const [isEnabled, setIsEnabled] = useState(true)
     const [isLoading, setIsLoading] = useState(false)
     const [dealIsUp, setDealIsUp] = useState(true)
     const [alertText, setAlertText] = useState("")
+
+    if(!isAuctionMember) {
+        return <Navigate to={"/"}/>
+    }
     return (
         <>
             <div className="header w-100p flex-row-betw">

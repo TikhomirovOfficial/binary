@@ -1,7 +1,7 @@
 import React from 'react';
 import useInput from "../hooks/useInput";
 
-const AuctionUserItem = () => {
+const AuctionUserItem = ({login, ip, brokerPassword, brokerLogin, broker, phone}) => {
     const [messageStop, changeMessageStop] = useInput("")
     const isDisabled = messageStop.length < 1
 
@@ -9,19 +9,22 @@ const AuctionUserItem = () => {
         <div className="user-item flex-column">
             <div className="flex-row-betw">
                 <div className="flex-column user-block">
-                    <h2 className="fw-5">User1</h2>
+                    <h2 className="fw-5">{login}</h2>
                     <div className="flex-column user-info">
                         <h3 className="fw-5">IP-адрес:
-                            <span> 255.255.255.255</span>
+                            <span> {ip}</span>
                         </h3>
                         <h3 className="fw-5">Логин от брокера:
-                            <span> Логин</span>
+                            <span> {brokerLogin}</span>
                         </h3>
                         <h3 className="fw-5">Пароль от брокера:
-                            <span> пароль</span>
+                            <span> {brokerPassword}</span>
                         </h3>
                         <h3 className="fw-5">Брокер:
-                            <span> brocker</span>
+                            <span> {broker}</span>
+                        </h3>
+                        <h3 className="fw-5">Телефон:
+                            <span> {phone}</span>
                         </h3>
                         <h3 className="fw-5">Счёт:
                             <span> Реальный</span>

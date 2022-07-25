@@ -1,5 +1,6 @@
 body {
   background: #F5F5F5;
+  overflow-x: hidden;
 }
 .WrapperForm {
   padding: 45px 55px;
@@ -8,8 +9,8 @@ body {
   width: 500px;
 }
 .inputForm {
-  padding: 13px;
-  font-size: 19px;
+  padding: 11px;
+  font-size: 15px;
 }
 .errorForm {
   color: red;

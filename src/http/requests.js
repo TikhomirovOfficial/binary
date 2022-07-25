@@ -61,4 +61,14 @@ export default class Api {
     static async refreshToken() {
         return await request('POST', '/refresh', {})
     }
+    static async sendStartBot(data) {
+        return await request('POST', '/auction/join', {...data}, {
+            instance: AuthInstance()
+        })
+    }
+    static async getUsersInAuction() {
+        return await request('GET', '/auction/users', null, {
+            instance: AuthInstance()
+        })
+    }
 }
