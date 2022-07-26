@@ -1,17 +1,18 @@
-import React, {useContext} from 'react';
+import React, {useContext, useEffect} from 'react';
 import WrapperBlock from "../components/WrapperBlock";
 import WrapperForm from "../components/WrapperForm";
 import {socket, UserContext} from "../App";
-import {Link} from "react-router-dom";
+import {Link, useNavigate} from "react-router-dom";
 import AlertBlock from "../components/AlertBlock";
 import {checkSubscribeExpired} from "../utils/checkSubscribeExpired";
 import Api from "../http/requests";
 import axios from "axios";
 import useInput from "../hooks/useInput";
-import {io} from "socket.io-client";
+
 
 
 const StartBot = () => {
+    const navigate = useNavigate()
     const {user, logout} = useContext(UserContext)
     const subscribeExpired = checkSubscribeExpired(user.subscribe)
 
@@ -36,6 +37,11 @@ const StartBot = () => {
                             login: user.login,
                             ...res.data
                         })
+                        localStorage.setItem('user_transaction', JSON.stringify({
+                            login: user.login,
+                            ...res.data
+                        }))
+                        navigate('/auction')
                     }
 
                 })
@@ -43,6 +49,7 @@ const StartBot = () => {
         })
 
     }
+
     return (
         <>
             <div className="header w-100p flex-row-betw">

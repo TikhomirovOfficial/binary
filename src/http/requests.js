@@ -71,4 +71,19 @@ export default class Api {
             instance: AuthInstance()
         })
     }
+    static async destroyTransaction(id) {
+        return await request('DELETE', '/auction/destroy', id, {
+            instance: AuthInstance()
+        })
+    }
+    static async getTransactionByUser() {
+        return await request('GET', '/auction/user', null, {
+            instance: AuthInstance()
+        })
+    }
+    static async changeDeal(data) {
+        return await request('PUT', '/auction/deal', {...data}, {
+            instance: AuthInstance()
+        })
+    }
 }

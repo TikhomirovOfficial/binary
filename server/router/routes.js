@@ -19,5 +19,8 @@ router.post('/destroy', authMiddleware, adminMiddleware, UserController.destroy)
 router.post('/auction/join', authMiddleware,  AuctionController.joinUser)
 
 router.get('/auction/users', authMiddleware, adminMiddleware, AuctionController.getUsers)
+router.delete('/auction/destroy', authMiddleware, AuctionController.destroy)
+router.get('/auction/user', authMiddleware, AuctionController.getByUserId)
+router.put('/auction/deal', authMiddleware, adminMiddleware, AuctionController.changeDeal)
 
 module.exports = router;

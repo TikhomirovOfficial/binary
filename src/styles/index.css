@@ -18,6 +18,19 @@ body {
 .header {
   padding: 20px 100px;
 }
+.choosed {
+  width: 30px;
+  top: -10px;
+  left: -10px;
+  height: 30px;
+  border-radius: 50%;
+  position: absolute;
+  background: blue;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  text-align: center;
+}
 .help {
   margin-top: 40px;
   text-decoration: underline;
@@ -40,6 +53,10 @@ body {
 .auction_control {
   color: white;
 }
+.auction_control .btn {
+  position: relative;
+}
+
 .stop-auction input {
   font-size: 18px;
   padding: 10px;

@@ -20,6 +20,35 @@ class AuctionController {
             auctionUsers
         })
     }
+    async getByUserId(req, res, next) {
+        try {
+            const uid = req.user.id
+            const transactionFinded = await TransactionService.getById(uid)
+            return res.json(transactionFinded)
+        } catch (e) {
+            next(e)
+        }
+
+    }
+    async changeDeal(req, res, next) {
+        try {
+            const data = req.body
+            const changed = await TransactionService.changeDeal(data)
+            return res.json(changed)
+        } catch (e) {
+            next(e)
+        }
+    }
+    async destroy(req, res, next) {
+        try {
+            const id = req.body
+            const deletedTransaction = await TransactionService.deleteTransaction(id)
+            return res.json(deletedTransaction)
+
+        } catch (e) {
+            next(e)
+        }
+    }
 }
 
 module.exports = new AuctionController()

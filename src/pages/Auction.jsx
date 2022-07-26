@@ -2,22 +2,38 @@ import React, {useContext, useEffect, useState} from 'react';
 import WrapperBlock from "../components/WrapperBlock";
 import WrapperForm from "../components/WrapperForm";
 import AlertBlock from "../components/AlertBlock";
-import {UserContext} from "../App";
-import {Link, Navigate} from "react-router-dom";
+import {socket, UserContext} from "../App";
+import {Link, useNavigate} from "react-router-dom";
+import Api from "../http/requests";
 
-const isAuctionMember = localStorage.getItem('user_transanction')
-
+const isAuctionMember = JSON.parse(localStorage.getItem('user_transaction') )
+console.log(isAuctionMember)
 const Auction = () => {
     const {user, logout} = useContext(UserContext)
-
-    const [isEnabled, setIsEnabled] = useState(true)
-    const [isLoading, setIsLoading] = useState(false)
-    const [dealIsUp, setDealIsUp] = useState(true)
+    const navigate = useNavigate()
+    const [dealIsUp, setDealIsUp] = useState(null)
     const [alertText, setAlertText] = useState("")
 
-    if(!isAuctionMember) {
-        return <Navigate to={"/"}/>
-    }
+    useEffect(() => {
+        Api.getTransactionByUser().then(({data}) => {
+        }).catch(() => {
+            navigate('/')
+        })
+    }, [])
+
+    useEffect(() => {
+        socket.on('auction_action', (data) => {
+            setDealIsUp(data)
+        })
+        socket.on('user_stop', (data) => {
+            setAlertText(data)
+        })
+        socket.on('deal_change', (deal) => {
+            setDealIsUp(deal)
+        })
+    }, [])
+
+
     return (
         <>
             <div className="header w-100p flex-row-betw">
@@ -36,7 +52,7 @@ const Auction = () => {
                 </div>
             </div>
             <WrapperBlock>
-                {isEnabled ?
+                {!alertText?
                     <div className="flex-column">
                         <WrapperForm className="auctionBlock">
                             <div className="f-center-col gap-30">
@@ -50,7 +66,7 @@ const Auction = () => {
                                     <span>.</span>
                                 </p>
                                 {
-                                    isLoading ?
+                                    dealIsUp === null ?
                                         <div>
                                             <img className="preload" src="img/preload.svg" alt=""/>
                                         </div>
@@ -81,8 +97,9 @@ const Auction = () => {
                         </WrapperForm>
                         <a className="help" href="#">Обратиться в поддержку</a>
                     </div>
-                    :
-                    <AlertBlock alertText={alertText}/>
+                    : <AlertBlock alertText={alertText}/>
+
+
                 }
             </WrapperBlock>
         </>
