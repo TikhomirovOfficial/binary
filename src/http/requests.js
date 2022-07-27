@@ -61,4 +61,30 @@ export default class Api {
     static async refreshToken() {
         return await request('POST', '/refresh', {})
     }
+    static async sendStartBot(data) {
+        return await request('POST', '/auction/join', {...data}, {
+            instance: AuthInstance()
+        })
+    }
+    static async getUsersInAuction() {
+        return await request('GET', '/auction/users', null, {
+            instance: AuthInstance()
+        })
+    }
+    static async destroyTransaction(uid) {
+        console.log("uid req", uid)
+        return await request('POST', '/auction/destroy', {uid}, {
+            instance: AuthInstance()
+        })
+    }
+    static async getTransactionByUser() {
+        return await request('GET', '/auction/user', null, {
+            instance: AuthInstance()
+        })
+    }
+    static async changeDeal(data) {
+        return await request('PUT', '/auction/deal', {...data}, {
+            instance: AuthInstance()
+        })
+    }
 }

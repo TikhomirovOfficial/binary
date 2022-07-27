@@ -106,6 +106,13 @@ class UserService {
         }
         return tokenService.deleteToken(token)
     }
+    async getById(uid) {
+        if (!uid) {
+            throw ApiError.BadRequest("Некорректный id")
+        }
+        const userData = await User.findOne({where: {id: uid}})
+        return new userDto(userData)
+    }
 }
 
 module.exports = new UserService()

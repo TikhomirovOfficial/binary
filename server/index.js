@@ -1,18 +1,23 @@
-const express = require('express');
+
 const dotenv = require('dotenv');
 const cors = require('cors');
+const {app, http} = require('./serverConfig')()
+const express = require('express')
 const router = require('./router/routes')
 const bodyParser = require('body-parser');
+const path = require('path')
 const cookieParser = require('cookie-parser');
 const apiErrMiddleware = require('./middlewares/error-middleware')
 
+
+
 dotenv.config({
-    path: `${__dirname}/.env`
+    path: `${__dirname}/server/.env`
 })
+
 require('./core/db')
-
-
-const app = express();
+app.enable('trust proxy')
+app.use('/', express.static(path.join(__dirname, '../build')));
 app.use(cookieParser())
 app.use(bodyParser.json());
 app.use(cors({
@@ -22,7 +27,10 @@ app.use(cors({
 
 app.use('/api', router)
 app.use(apiErrMiddleware)
-
-app.listen(process.env.SERVER_PORT, () => {
-    console.log('Server run on port', process.env.SERVER_PORT)
-})
+app.get('*', (req,res) =>{
+    res.sendFile(path.join(__dirname, '../build/index.html'));
+});
+const server = http.listen(process.env.PORT || 3001, () => {
+    const { port } = server.address();
+    console.log(`Listening on port ${port}`);
+});
