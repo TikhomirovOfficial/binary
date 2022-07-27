@@ -14,6 +14,11 @@ import useInput from "../hooks/useInput";
 const StartBot = () => {
     const navigate = useNavigate()
     const {user, logout} = useContext(UserContext)
+    useEffect(() => {
+        if(user.admin) {
+            navigate('/admin/panel')
+        }
+    }, [])
     const subscribeExpired = checkSubscribeExpired(user.subscribe)
 
     const [broker, changeBroker] = useInput(user.brokers[0] || "")
@@ -22,6 +27,7 @@ const StartBot = () => {
     const [brokerPassword, changeBrokerPassword] = useInput()
     const [brokerLogin, changeBrokerLogin] = useInput()
     const disabledButton = !broker || !phone || !brokerPassword || !brokerLogin
+
 
     useEffect(() => {
         Api.getTransactionByUser().then(() => {
