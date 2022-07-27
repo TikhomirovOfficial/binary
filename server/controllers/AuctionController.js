@@ -41,8 +41,9 @@ class AuctionController {
     }
     async destroy(req, res, next) {
         try {
-            const id = req.body
-            const deletedTransaction = await TransactionService.deleteTransaction(id)
+            const {uid} = req.body
+            console.log(req.body)
+            const deletedTransaction = await TransactionService.deleteTransaction(uid)
             return res.json(deletedTransaction)
 
         } catch (e) {

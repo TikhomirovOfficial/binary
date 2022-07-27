@@ -13,10 +13,17 @@ const Auction = () => {
     const navigate = useNavigate()
     const [dealIsUp, setDealIsUp] = useState(null)
     const [alertText, setAlertText] = useState("")
+    const stopBot = async () => {
 
+      await Api.destroyTransaction(user.id).then(() => {
+          socket.emit("stop_client", user.id)
+          setAlertText("Вы остановили бота")
+      })
+    }
     useEffect(() => {
         Api.getTransactionByUser().then(({data}) => {
-        }).catch(() => {
+            setDealIsUp(data.deal)
+        }).catch((e) => {
             navigate('/')
         })
     }, [])
@@ -31,6 +38,7 @@ const Auction = () => {
         socket.on('deal_change', (deal) => {
             setDealIsUp(deal)
         })
+
     }, [])
 
 
@@ -88,7 +96,7 @@ const Auction = () => {
                                 }
 
 
-                                <button className="btn c-white" style={{background: '#3BD341'}}>
+                                <button onClick={stopBot} className="btn c-white" style={{background: '#3BD341'}}>
                                     Остановить
                                 </button>
                             </div>

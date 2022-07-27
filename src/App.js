@@ -6,7 +6,7 @@ import Api from "./http/requests";
 import {io} from "socket.io-client";
 
 export const UserContext = createContext({})
-export const socket = io("http://localhost:3001")
+export let socket;
 
 const App = () => {
     const [user, setUser] = useState({})
@@ -19,6 +19,7 @@ const App = () => {
     useEffect(() => {
         CheckAuth().then((res) => {
             setUser(res)
+            socket = io("http://localhost:3001", {query: `id=${res.id}`})
         }).catch(() => {
             setUser({
                 admin: false

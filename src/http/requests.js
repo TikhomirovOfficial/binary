@@ -71,8 +71,9 @@ export default class Api {
             instance: AuthInstance()
         })
     }
-    static async destroyTransaction(id) {
-        return await request('DELETE', '/auction/destroy', id, {
+    static async destroyTransaction(uid) {
+        console.log("uid req", uid)
+        return await request('POST', '/auction/destroy', {uid}, {
             instance: AuthInstance()
         })
     }

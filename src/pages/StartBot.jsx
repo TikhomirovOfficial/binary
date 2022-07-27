@@ -18,16 +18,24 @@ const StartBot = () => {
 
     const [broker, changeBroker] = useInput(user.brokers[0] || "")
     const [phone, changePhone] = useInput()
+    const [brokerReal, changeBrokerReal] = useInput(false)
     const [brokerPassword, changeBrokerPassword] = useInput()
     const [brokerLogin, changeBrokerLogin] = useInput()
     const disabledButton = !broker || !phone || !brokerPassword || !brokerLogin
+
+    useEffect(() => {
+        Api.getTransactionByUser().then(() => {
+            navigate('/auction')
+        })
+    }, [])
     const startBot = async () => {
         await axios.get('https://api.ipify.org/?format=json').then(({data}) => {
             if (data.ip) {
-                Api.sendStartBot({
+                 Api.sendStartBot({
                     uid: user.id,
                     ip: data.ip,
                     phone,
+                    broker_real: brokerReal,
                     broker,
                     broker_login: brokerLogin,
                     broker_password: brokerPassword
@@ -37,10 +45,6 @@ const StartBot = () => {
                             login: user.login,
                             ...res.data
                         })
-                        localStorage.setItem('user_transaction', JSON.stringify({
-                            login: user.login,
-                            ...res.data
-                        }))
                         navigate('/auction')
                     }
 
@@ -83,6 +87,10 @@ const StartBot = () => {
                                                 <option value={item}>{item}</option>
                                             ))
                                         }
+                                    </select>
+                                    <select onChange={changeBrokerReal} className="inputForm">
+                                       <option value={false}>Демо</option>
+                                       <option value={true}>Реальный</option>
                                     </select>
                                     <input value={phone} onChange={changePhone} className="inputForm" type="text" placeholder={"Номер телефона"}/>
                                     <input value={brokerLogin} onChange={changeBrokerLogin} className="inputForm" type="text" placeholder={"Брокерский логин"}/>

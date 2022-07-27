@@ -23,6 +23,9 @@ module.exports = {
       broker_login: {
         type: Sequelize.STRING
       },
+      broker_real: {
+        type: Sequelize.BOOLEAN
+      },
       broker_password: {
         type: Sequelize.STRING
       },

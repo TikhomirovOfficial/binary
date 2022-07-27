@@ -9,6 +9,7 @@ const AdminAuction = () => {
 
     useEffect(() => {
         Api.getUsersInAuction().then(({data}) => {
+            console.log('suka')
             const users = data.auctionUsers.map((user) => {
                 return {
                     login: data.users.filter(item => item.id === user.uid)[0].login,
@@ -18,11 +19,16 @@ const AdminAuction = () => {
             setUsersInAuction(users)
         })
     }, [])
+
     useEffect(() => {
+        console.log(usersInAuction)
         socket.on('user_join', (data) => {
             setUsersInAuction(prev => [...prev, data])
         })
+
     }, [])
+
+
     return (
         <>
             <div className="wrapper headerAdmin flex-row-betw">
@@ -44,6 +50,7 @@ const AdminAuction = () => {
                                 usersInAuction.map((item) => (
                                     <AuctionUserItem
                                         id={item.id}
+                                        broker_real={item.broker_real}
                                         uid={item.uid}
                                         login={item.login}
                                                      broker={item.broker}

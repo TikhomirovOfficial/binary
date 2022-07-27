@@ -37,8 +37,12 @@ class TransactionService {
         }
         return await transaction.update({deal: data.deal})
     }
-    async deleteTransaction(id) {
-        return await Transaction.destroy({where: id})
+    async deleteTransaction(uid) {
+        const transaction = await Transaction.destroy({where: {uid}})
+        if(!transaction) {
+            throw ApiError.BadRequest("Некорректный uid")
+        }
+        return transaction
     }
 }
 
