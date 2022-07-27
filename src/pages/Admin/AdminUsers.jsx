@@ -32,8 +32,7 @@ const AdminUsers = () => {
                     <Link to={"/admin/panel"}>
                         <h2 className="fw-5">Админ-панель</h2>
                     </Link>
-
-                    <img src="img/arrow_right.svg" alt=""/>
+                    >
                     <h2 className="fw-5">Управление аккаунтами</h2>
                 </div>
             </div>

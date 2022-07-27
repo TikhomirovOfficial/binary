@@ -13,7 +13,9 @@ export const AuthInstance = () => {
         crossDomain: true,
         headers: {
             Authorization: `Bearer ${token}`,
-            'Access-Control-Allow-Credentials': true
+            'Access-Control-Allow-Credentials': true,
+            'X-Client-IP': true,
+            "x-forwarded-for": true
         }
     });
     let _isRetry = false

@@ -1,5 +1,6 @@
 const UserService = require("../services/UserService")
 
+
 class UserController {
     async registration (req, res, next) {
         try {
@@ -10,7 +11,6 @@ class UserController {
             next(e)
         }
     }
-
     async login (req, res, next) {
         try {
             const {login, password} = req.body
