@@ -11,11 +11,20 @@ module.exports = {
       login: {
         type: Sequelize.STRING
       },
+      message_stop: {
+        type: Sequelize.STRING,
+        defaultValue: ""
+      },
       password: {
         type: Sequelize.TEXT
       },
       admin: {
         type: Sequelize.BOOLEAN,
+        defaultValue: false
+      },
+      broker_access: {
+        type: Sequelize.BOOLEAN,
+        allowNull: false,
         defaultValue: false
       },
       subscribe: {

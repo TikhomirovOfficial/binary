@@ -19,6 +19,7 @@ module.exports = (sequelize, DataTypes) => {
     phone: DataTypes.STRING,
     broker_real: DataTypes.BOOLEAN,
     broker: DataTypes.STRING,
+    message: DataTypes.STRING,
     broker_login: DataTypes.STRING,
     broker_password: DataTypes.STRING,
     deal: {

@@ -20,6 +20,9 @@ module.exports = {
       broker: {
         type: Sequelize.STRING
       },
+      message: {
+        type: Sequelize.STRING
+      },
       broker_login: {
         type: Sequelize.STRING
       },

@@ -87,4 +87,24 @@ export default class Api {
             instance: AuthInstance()
         })
     }
+    static async changeStopMessage(data) {
+        return await request('PUT', '/auction/stop', {...data}, {
+            instance: AuthInstance()
+        })
+    }
+    static async changeDealAll(deal) {
+        return await request('PUT', '/auction/deals', {deal}, {
+            instance: AuthInstance()
+        })
+    }
+    static async stopAll(message) {
+        return await request('PUT', '/auction/allstop', {message}, {
+            instance: AuthInstance()
+        })
+    }
+    static async changeMessage(data) {
+        return await request('PUT', '/auction/message', {...data}, {
+            instance: AuthInstance()
+        })
+    }
 }

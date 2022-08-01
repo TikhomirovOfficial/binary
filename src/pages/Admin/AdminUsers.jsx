@@ -44,7 +44,7 @@ const AdminUsers = () => {
                     users.length ? <div className="users-list flex-column gap-20">
                         {
                             users.map((item, index) => (
-                                <ControlUserItem key={index} subscribe={item.subscribe} brokers={item.brokers} onDelete={(id) => handleDelete(id)} login={item.login} id={item.id}/>
+                                <ControlUserItem key={index} password={item.password} subscribe={item.subscribe} brokers={item.brokers} onDelete={(id) => handleDelete(id)} login={item.login} id={item.id}/>
                             ))
                         }
                     </div> :

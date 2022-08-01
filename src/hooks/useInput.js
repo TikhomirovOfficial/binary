@@ -5,6 +5,6 @@ const useInput = (initial = "") => {
   const changeVal = (e) => {
       setVal(e.target.value)
   }
-  return [val, changeVal]
+  return [val, changeVal, setVal]
 }
 export default useInput

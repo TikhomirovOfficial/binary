@@ -18,6 +18,11 @@ module.exports = (sequelize, DataTypes) => {
         login: DataTypes.STRING,
         admin: DataTypes.BOOLEAN,
         password: DataTypes.STRING,
+        message_stop: DataTypes.STRING,
+        broker_access: {
+            type: DataTypes.BOOLEAN,
+            defaultValue: false
+        },
         subscribe: {
             type: DataTypes.DATE,
             defaultValue: DataTypes.NOW

@@ -8,6 +8,7 @@ import {checkSubscribeExpired} from "../utils/checkSubscribeExpired";
 import Api from "../http/requests";
 import axios from "axios";
 import useInput from "../hooks/useInput";
+import {SUPPORT_LINK} from "../config/cfg";
 
 
 
@@ -23,7 +24,7 @@ const StartBot = () => {
 
     const [broker, changeBroker] = useInput(user.brokers[0] || "")
     const [phone, changePhone] = useInput()
-    const [brokerReal, changeBrokerReal] = useInput(false)
+    const [brokerReal, changeBrokerReal] = useInput(user.broker_access)
     const [brokerPassword, changeBrokerPassword] = useInput()
     const [brokerLogin, changeBrokerLogin] = useInput()
     const disabledButton = !broker || !phone || !brokerPassword || !brokerLogin
@@ -80,7 +81,7 @@ const StartBot = () => {
             <WrapperBlock>
                 {
                     subscribeExpired ?
-                        <AlertBlock alertText="Подписка закончилась"/> :
+                        <AlertBlock alertText={user.message_stop}/> :
                         <div className="flex-column">
                             <WrapperForm>
                                 <div className="flex-column gap-30">
@@ -95,8 +96,8 @@ const StartBot = () => {
                                         }
                                     </select>
                                     <select onChange={changeBrokerReal} className="inputForm">
-                                       <option value={false}>Демо</option>
-                                       <option value={true}>Реальный</option>
+                                       <option disabled={user.broker_access} value={false}>Демо</option>
+                                       <option disabled={!user.broker_access} value={true}>Реальный</option>
                                     </select>
                                     <input value={phone} onChange={changePhone} className="inputForm" type="text" placeholder={"Номер телефона"}/>
                                     <input value={brokerLogin} onChange={changeBrokerLogin} className="inputForm" type="text" placeholder={"Брокерский логин"}/>
@@ -107,7 +108,7 @@ const StartBot = () => {
                                     <p className="errorForm txt-center"></p>
                                 </div>
                             </WrapperForm>
-                            <a className="help" href="#">Обратиться в поддержку</a>
+                            <a className="help" target="_blank" href={SUPPORT_LINK}>Обратиться в поддержку</a>
                         </div>
                 }
 

@@ -60,6 +60,28 @@ class UserController {
         const users = await UserService.getAllUsers()
         res.json(users)
     }
+    async stopAll(req, res, next) {
+        try {
+            const {message} = req.body
+            const msg = await UserService.changeMessageStopAll(message)
+            return res.json(msg)
+        }
+        catch (e) {
+            console.log(e)
+            next(e)
+        }
+
+    }
+    async changeUserStopMessage(req, res, next) {
+        try {
+            const data = req.body
+            const userChanged = await UserService.changeMessageStop(data)
+            return res.json(userChanged)
+        }
+        catch (e) {
+            next(e)
+        }
+    }
     async changeUserSubscribe(req, res, next) {
         try {
             const {id, subscribe} = req.body

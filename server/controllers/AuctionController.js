@@ -39,6 +39,24 @@ class AuctionController {
             next(e)
         }
     }
+    async changeDealAll(req, res, next) {
+        try {
+            const deal = req.body
+            const changed = await TransactionService.changeDealAll(deal)
+            return res.json(deal)
+        } catch (e) {
+            next(e)
+        }
+    }
+    async changeMessage(req, res, next) {
+        try {
+            const data = req.body
+            const changed = await TransactionService.changeMessage(data)
+            return res.json(changed)
+        } catch (e) {
+            next(e)
+        }
+    }
     async destroy(req, res, next) {
         try {
             const {uid} = req.body

@@ -18,6 +18,9 @@ body {
 .header {
   padding: 20px 100px;
 }
+.alertText {
+  max-width: 600px;
+}
 .choosed {
   width: 30px;
   top: -10px;
@@ -36,8 +39,8 @@ body {
   text-decoration: underline;
 }
 .btn {
-  padding: 9px 30px;
-  font-size: 19px;
+  padding: 9px 25px;
+  font-size: 16px;
   text-align: center;
   width: fit-content;
 }
@@ -48,7 +51,7 @@ body {
   color: white;
 }
 .user-block {
-  gap: 60px;
+  gap: 20px;
 }
 .auction_control {
   color: white;

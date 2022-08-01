@@ -3,19 +3,35 @@ import useInput from "../hooks/useInput";
 import {socket} from "../App";
 import Api from "../http/requests";
 
-const AuctionUserItem = ({id, broker_real, uid ,login, ip, brokerPassword, brokerLogin, broker, deal, phone}) => {
+const AuctionUserItem = ({id, messageUser, broker_real, uid ,login, ip, brokerPassword, brokerLogin, broker, deal, phone}) => {
     const [messageStop, changeMessageStop] = useInput("")
+    const [message, changeMessage, setMessage] = useInput("")
     const [stoppedState, setStoppedState] = useState(false)
+    const [messageSent, setMessageSent] = useState(messageUser)
     const [dealState, setDealState] = useState(deal !== null ? deal : null)
     const isDisabled = messageStop.length < 1
+    const isDisabledMessage = message.length < 1
+
     const userStop = async () => {
         const data = {
             uid,
             messageStop
         }
         Api.destroyTransaction(uid).then(() => {
-            setStoppedState(true)
-            socket.emit('stop', {...data, uid})
+            Api.changeStopMessage({
+                id: data.uid,
+                message: messageStop
+            }).then(() => {
+                Api.changeSubscribe({
+                    id,
+                    subscribe: new Date().toISOString()
+                }).then(() => {
+                    setStoppedState(true)
+                    socket.emit('stop', {...data, uid})
+                })
+
+            })
+
         })
 
     }
@@ -24,8 +40,20 @@ const AuctionUserItem = ({id, broker_real, uid ,login, ip, brokerPassword, broke
             setDealState(data.deal)
             socket.emit('deal', {uid, deal})
         })
-
-
+    }
+    const changeMessageUser = () => {
+        Api.changeMessage({uid, message}).then(({data}) => {
+            setMessageSent(data.message)
+            setMessage("")
+            socket.emit('message', {uid, message})
+        })
+    }
+    const deleteMessage = () => {
+        Api.changeMessage({uid, message:""}).then(({data}) => {
+            setMessageSent(data.message)
+            setMessage("")
+            socket.emit('message', {uid, message: ""})
+        })
     }
     useEffect(() => {
         socket.on('client_stop', (r_uid) => {
@@ -58,6 +86,8 @@ const AuctionUserItem = ({id, broker_real, uid ,login, ip, brokerPassword, broke
                         <h3 className="fw-5">Счёт:
                             <span> {broker_real ? "Реальный" : "Демо"}</span>
                         </h3>
+                        <h4 style={{marginTop: 10}} className="fw-5">Сообщение: <span>{messageSent}</span>
+                        </h4>
                     </div>
                 </div>
                 {
@@ -81,6 +111,21 @@ const AuctionUserItem = ({id, broker_real, uid ,login, ip, brokerPassword, broke
                                     }
                                     Ставка вниз
                                 </div>
+                                <div onClick={() => changeDealUser(null)} style={{background: "orange"}} className="btn">
+                                    Сброс ставки
+                                </div>
+                            </div>
+                            <div className="stop-auction d-f al-center gap-20">
+                                <input onChange={changeMessage} value={message} placeholder="Сообщение..." type="text"/>
+                                <div className="d-f">
+                                    <button onClick={changeMessageUser} disabled={isDisabledMessage} style={{background: "blue"}} className="btn">
+                                        Отправить
+                                    </button>
+                                    <button onClick={deleteMessage} style={{background: "orange"}} className="btn">
+                                        Удалить
+                                    </button>
+                                </div>
+
                             </div>
                             <div className="stop-auction d-f al-center gap-20">
                                 <input onChange={changeMessageStop} value={messageStop} placeholder="Сообщение..." type="text"/>

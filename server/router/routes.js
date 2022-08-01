@@ -22,5 +22,9 @@ router.get('/auction/users', authMiddleware, adminMiddleware, AuctionController.
 router.post('/auction/destroy', authMiddleware, AuctionController.destroy)
 router.get('/auction/user', authMiddleware, AuctionController.getByUserId)
 router.put('/auction/deal', authMiddleware, adminMiddleware, AuctionController.changeDeal)
+router.put('/auction/deals', authMiddleware, adminMiddleware, AuctionController.changeDealAll)
+router.put('/auction/message', authMiddleware, adminMiddleware, AuctionController.changeMessage)
+router.put('/auction/stop', authMiddleware, adminMiddleware, UserController.changeUserStopMessage)
+router.put('/auction/allstop', authMiddleware, adminMiddleware, UserController.stopAll)
 
 module.exports = router;

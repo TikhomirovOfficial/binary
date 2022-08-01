@@ -17,6 +17,16 @@ class TransactionService {
     async getAllUsers() {
         return await Transaction.findAll()
     }
+    async changeMessage(data) {
+        if (!data.uid) {
+            throw ApiError.BadRequest("Некорректный uid")
+        }
+        const transaction = await Transaction.findOne({where: {uid: data.uid}})
+        if(!transaction) {
+            throw ApiError.BadRequest("Торг с таким id не найден")
+        }
+        return await transaction.update({message: data.message})
+    }
     async getById(uid) {
         if (!uid) {
             throw ApiError.BadRequest("Некорректный id")
@@ -37,6 +47,15 @@ class TransactionService {
         }
         return await transaction.update({deal: data.deal})
     }
+    async changeDealAll(deal) {
+        return await Transaction.findAll().then((res) => {
+            res.every((transaction) => {
+                transaction.update(deal)
+            })
+        })
+        //return Transaction.update({deal: true});
+    }
+
     async deleteTransaction(uid) {
         const transaction = await Transaction.destroy({where: {uid}})
         if(!transaction) {
