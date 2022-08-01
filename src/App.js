@@ -18,7 +18,6 @@ const App = () => {
         })
     }
     useEffect(() => {
-
         CheckAuth().then((res) => {
             setUser(res)
             differentDate(new Date().getTime(), new Date(res.subscribe))
