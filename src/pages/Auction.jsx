@@ -1,16 +1,60 @@
-import React, {useContext, useState} from 'react';
+import React, {useContext, useEffect, useState} from 'react';
 import WrapperBlock from "../components/WrapperBlock";
 import WrapperForm from "../components/WrapperForm";
 import AlertBlock from "../components/AlertBlock";
-import {UserContext} from "../App";
-import {Link} from "react-router-dom";
+import {socket, UserContext} from "../App";
+import {Link, useNavigate} from "react-router-dom";
+import Api from "../http/requests";
+import {SUPPORT_LINK} from "../config/cfg";
 
+const isAuctionMember = JSON.parse(localStorage.getItem('user_transaction') )
+console.log(isAuctionMember)
 const Auction = () => {
     const {user, logout} = useContext(UserContext)
-    const [isEnabled, setIsEnabled] = useState(true)
-    const [isLoading, setIsLoading] = useState(false)
-    const [dealIsUp, setDealIsUp] = useState(true)
+    const navigate = useNavigate()
+    const [dealIsUp, setDealIsUp] = useState(null)
     const [alertText, setAlertText] = useState("")
+    const [message, setMessage] = useState("")
+
+    const stopBot = async () => {
+
+      await Api.destroyTransaction(user.id).then(() => {
+          socket.emit("stop_client", user.id)
+          setAlertText("Вы остановили бота")
+      })
+    }
+    useEffect(() => {
+        Api.getTransactionByUser().then(({data}) => {
+            setDealIsUp(data.deal)
+            setMessage(data.message)
+        }).catch((e) => {
+            navigate('/')
+        })
+    }, [])
+
+    useEffect(() => {
+        socket.on('auction_action', (data) => {
+            setDealIsUp(data)
+        })
+        socket.on('user_stop', (data) => {
+            setAlertText(data)
+        })
+        socket.on('stop_every', (data) => {
+            setAlertText(data)
+        })
+        socket.on('deal_change', (deal) => {
+            setDealIsUp(deal)
+        })
+        socket.on('deal_all', (deal) => {
+            setDealIsUp(deal)
+        })
+        socket.on('message_change', (message) => {
+            setMessage(message)
+        })
+
+    }, [])
+
+
     return (
         <>
             <div className="header w-100p flex-row-betw">
@@ -29,21 +73,28 @@ const Auction = () => {
                 </div>
             </div>
             <WrapperBlock>
-                {isEnabled ?
+                {!alertText?
                     <div className="flex-column">
+                        <h2 style={{marginBottom: 20, height: 30}} className="txt-center">{message}</h2>
                         <WrapperForm className="auctionBlock">
                             <div className="f-center-col gap-30">
                                 <h1 className="fw-5">
                                     Бот запущен
                                 </h1>
-                                <p className="auctionProccess">
-                                    Идут торги
-                                    <span>.</span>
-                                    <span>.</span>
-                                    <span>.</span>
+                                <p style={{height: 20}} className="auctionProccess">
+                                    {dealIsUp === null ?
+                                        <>
+                                            Поиск сигналов
+                                            <span>.</span>
+                                            <span>.</span>
+                                            <span>.</span>
+                                        </> :
+                                        ""
+                                    }
+
                                 </p>
                                 {
-                                    isLoading ?
+                                    dealIsUp === null ?
                                         <div>
                                             <img className="preload" src="img/preload.svg" alt=""/>
                                         </div>
@@ -65,17 +116,18 @@ const Auction = () => {
                                 }
 
 
-                                <button className="btn c-white" style={{background: '#3BD341'}}>
+                                <button onClick={stopBot} className="btn c-white" style={{background: '#3BD341'}}>
                                     Остановить
                                 </button>
                             </div>
 
 
                         </WrapperForm>
-                        <a className="help" href="#">Обратиться в поддержку</a>
+                        <a className="help" target="_blank" href={SUPPORT_LINK}>Обратиться в поддержку</a>
                     </div>
-                    :
-                    <AlertBlock alertText={alertText}/>
+                    : <AlertBlock alertText={alertText}/>
+
+
                 }
             </WrapperBlock>
         </>

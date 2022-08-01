@@ -32,8 +32,7 @@ const AdminUsers = () => {
                     <Link to={"/admin/panel"}>
                         <h2 className="fw-5">Админ-панель</h2>
                     </Link>
-
-                    <img src="img/arrow_right.svg" alt=""/>
+                    >
                     <h2 className="fw-5">Управление аккаунтами</h2>
                 </div>
             </div>
@@ -45,7 +44,7 @@ const AdminUsers = () => {
                     users.length ? <div className="users-list flex-column gap-20">
                         {
                             users.map((item, index) => (
-                                <ControlUserItem key={index} subscribe={item.subscribe} brokers={item.brokers} onDelete={(id) => handleDelete(id)} login={item.login} id={item.id}/>
+                                <ControlUserItem key={index} password={item.password} subscribe={item.subscribe} brokers={item.brokers} onDelete={(id) => handleDelete(id)} login={item.login} id={item.id}/>
                             ))
                         }
                     </div> :

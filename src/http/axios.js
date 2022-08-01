@@ -1,7 +1,8 @@
 import axios from "axios";
+import {SERVER_URL} from "../config/cfg";
 
 const Axios = axios.create({
-    baseURL: 'http://localhost:3001/api',
+    baseURL: SERVER_URL,
     withCredentials: true,
     crossDomain: true,
     headers: {

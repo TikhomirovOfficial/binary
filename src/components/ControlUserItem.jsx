@@ -1,8 +1,10 @@
 import React, {useState} from 'react';
 import useInput from "../hooks/useInput";
 import Api from "../http/requests";
+import {differentDate} from "../utils/differentDate";
+import {checkSubscribeExpired} from "../utils/checkSubscribeExpired";
 
-const ControlUserItem = ({onDelete, id, login, brokers, subscribe}) => {
+const ControlUserItem = ({onDelete, password, id, login, brokers, subscribe}) => {
 
     const [subDays, changeDays] = useInput()
     const [subHours, changeHours] = useInput()
@@ -10,6 +12,8 @@ const ControlUserItem = ({onDelete, id, login, brokers, subscribe}) => {
     const [brokerState, setBrokerState] = useState(brokers || [])
     const [brokerName, changeBrokerName] = useInput("")
     const [sbChanged, setSbChanged] = useState(false)
+    const [sbDeleted, setSbDeleted] = useState(false)
+
 
     const buttonDisabled = Number(subDays) < 0 || Number(subHours) < 0 || (!Number(subDays) && !Number(subHours))
 
@@ -37,7 +41,7 @@ const ControlUserItem = ({onDelete, id, login, brokers, subscribe}) => {
         })
     }
     const sendChangeSubscribe = async() => {
-        const subDate = new Date(subscribe)
+        const subDate = new Date()
         if(Number(subDays)) {
             subDate.setDate(subDate.getDate() + Number(subDays));
         }
@@ -58,6 +62,12 @@ const ControlUserItem = ({onDelete, id, login, brokers, subscribe}) => {
         await Api.changeSubscribe({
             id,
             subscribe: new Date().toISOString()
+        }).then(() => {
+            setSbDeleted(true)
+        }).then(() => {
+            setTimeout(() => {
+                setSbDeleted(false)
+            }, 2000)
         })
     }
 
@@ -65,7 +75,7 @@ const ControlUserItem = ({onDelete, id, login, brokers, subscribe}) => {
         <div className="user-item flex-column">
             <div className="flex-row-betw">
                 <h2 className="fw-5">{login}</h2>
-                <h2 onClick={resetSubscribe} className="fw-5" style={{color: 'orange'}}>Обнулить подписку</h2>
+                <h2 onClick={resetSubscribe} className="fw-5" style={{color: 'orange'}}>{sbDeleted ? "Обнулено": "Обнулить подписку"}</h2>
             </div>
             <div style={{background: "green", width: 100, padding: 10}} className="p-rel txt-center c-white">
                 <div onClick={handleBrokersMenu}>
@@ -103,25 +113,39 @@ const ControlUserItem = ({onDelete, id, login, brokers, subscribe}) => {
                 }
             </div>
             <div className="flex-row-betw">
-                <div className="d-f al-center gap-20">
-                    <p>Продлить подписку на</p>
-                    <div className="d-f subscribeInputs al-center">
-                        <input value={subDays} onChange={changeDays} type="number" placeholder="Дни"/>
-                        <input value={subHours} onChange={changeHours} type="number" placeholder="Часы"/>
-                    </div>
+                <div>
+                    <h3 className="fw-5" style={{marginBottom: 30}}>Пароль: <b>{password}</b></h3>
                     {
-                        sbChanged ? <button className="btn" style={{background: "green", color: "white"}}>
-                            Продлено
-                        </button> : <button onClick={sendChangeSubscribe} className="btn" style={{background: "blue", color: "white"}} disabled={buttonDisabled}>
-                            Принять
-                        </button>
+                        checkSubscribeExpired(subscribe) ? <h5 className="fw-5">
+                            Подписка кончилась
+                        </h5> :
+                            <h5 className="fw-5">До конца подписки {differentDate(new Date(subscribe).getTime())[0]} дней {differentDate(new Date(subscribe).getTime())[1]} часов</h5>
                     }
 
+                    <div className="d-f al-center gap-20">
+
+                        <p>Продлить подписку на</p>
+                        <div className="d-f subscribeInputs al-center">
+                            <input value={subDays} onChange={changeDays} type="number" placeholder="Дни"/>
+                            <input value={subHours} onChange={changeHours} type="number" placeholder="Часы"/>
+                        </div>
+                        {
+                            sbChanged ? <button className="btn" style={{background: "green", color: "white"}}>
+                                Продлено
+                            </button> : <button onClick={sendChangeSubscribe} className="btn" style={{background: "blue", color: "white"}} disabled={buttonDisabled}>
+                                Принять
+                            </button>
+                        }
+
+                    </div>
+
                 </div>
+
                 <h2 onClick={deleteUser} className="fw-5" style={{color: "red"}}>
                     Удалить
                 </h2>
             </div>
+
         </div>
     );
 };

@@ -12,6 +12,7 @@ const CreateUser = ({handleForm}) => {
     const [brokerName, changeBrokerName] = useInput("")
     const [brokersMenu, setBrokersMenu] = useState(false)
     const [created, setCreated] = useState(false)
+    const [brokerAccess, changeBrokerAccess] = useInput(false)
     const buttonDisabled = (Number(subDays) < 1 && Number(subHours) < 1) || login.length < 1 || password.length < 1 || brokerState.length < 1
 
     const handleBrokersMenu = () => {
@@ -39,6 +40,7 @@ const CreateUser = ({handleForm}) => {
         const userData = {
             login,
             password,
+            broker_access: brokerAccess,
             subscribe: getSubscribe(),
             brokers: brokerState
         }
@@ -65,9 +67,13 @@ const CreateUser = ({handleForm}) => {
                                 <input onChange={changeLogin} placeholder="Логин" type="text"/>
 
                             </div>
-                            <div onChange={changePassword} className="d-f inputWrapper al-center">
-                                <input placeholder="Пароль" type="text"/>
+                            <div  className="d-f inputWrapper al-center">
+                                <input onChange={changePassword} placeholder="Пароль" type="text"/>
                             </div>
+                            <select onChange={changeBrokerAccess} className="inputWrapper">
+                                <option value={false}>Демо-счет</option>
+                                <option value={true}>Реальный счет</option>
+                            </select>
                             <div style={{background: "green", width: 100, padding: 10}} className="p-rel txt-center c-white">
                                 <div onClick={handleBrokersMenu}>
                                     {!brokersMenu ? "Брокеры": "Закрыть"}

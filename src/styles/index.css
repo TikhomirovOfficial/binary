@@ -1,5 +1,6 @@
 body {
   background: #F5F5F5;
+  overflow-x: hidden;
 }
 .WrapperForm {
   padding: 45px 55px;
@@ -8,8 +9,8 @@ body {
   width: 500px;
 }
 .inputForm {
-  padding: 13px;
-  font-size: 19px;
+  padding: 11px;
+  font-size: 15px;
 }
 .errorForm {
   color: red;
@@ -17,13 +18,29 @@ body {
 .header {
   padding: 20px 100px;
 }
+.alertText {
+  max-width: 600px;
+}
+.choosed {
+  width: 30px;
+  top: -10px;
+  left: -10px;
+  height: 30px;
+  border-radius: 50%;
+  position: absolute;
+  background: blue;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  text-align: center;
+}
 .help {
   margin-top: 40px;
   text-decoration: underline;
 }
 .btn {
-  padding: 9px 30px;
-  font-size: 19px;
+  padding: 9px 25px;
+  font-size: 16px;
   text-align: center;
   width: fit-content;
 }
@@ -34,11 +51,15 @@ body {
   color: white;
 }
 .user-block {
-  gap: 60px;
+  gap: 20px;
 }
 .auction_control {
   color: white;
 }
+.auction_control .btn {
+  position: relative;
+}
+
 .stop-auction input {
   font-size: 18px;
   padding: 10px;
@@ -101,11 +122,11 @@ body {
   font-weight: 300;
 }
 .inputWrapper input{
-  font-size: 18px;
+  font-size: 16px;
 }
 .inputWrapper {
   border-radius: 10px;
-  padding: 10px;
+  padding: 8px;
   border: 1px solid gray;
 }
 .modal-create-user {
@@ -129,7 +150,7 @@ body {
   width: 60px;
   text-align: center;
   border: 1px solid black;
-  font-size: 18px;
+  font-size: 16px;
 }
 .add-user {
   margin-top: 30px;

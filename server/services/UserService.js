@@ -1,8 +1,7 @@
-const {User} = require("../models")
+const {User, Transaction} = require("../models")
 const tokenService = require('./TokenService')
 const userDto = require('../dtos/UserDto')
 const ApiError = require("../exceptions/ApiError");
-const bcrypt = require('bcrypt')
 
 
 class UserService {
@@ -12,11 +11,11 @@ class UserService {
             throw ApiError.BadRequest(`Пользователь с логином ${user.login} существует.`)
         }
         if (user.login && user.password) {
-            const hashPassword = await bcrypt.hash(String(user.password), 3)
             const userCreated = await User.create({
                 login: user.login,
-                password: hashPassword,
+                password: user.password,
                 subscribe: user.subscribe,
+                broker_access: user.broker_access,
                 admin: user.admin,
                 brokers: user.brokers
             });
@@ -57,7 +56,7 @@ class UserService {
         if (!user) {
             throw ApiError.BadRequest("Пользователя с таким логином не существует")
         }
-        const isPassEquals = await bcrypt.compare(password, user.password)
+        const isPassEquals = password === user.password
         if (!isPassEquals) {
             throw ApiError.BadRequest("Неверный пароль")
         }
@@ -70,9 +69,27 @@ class UserService {
             ...tokens
         }
     }
+    async changeMessageStopAll(message) {
+        try {
+            const updated = await User.update({
+                message_stop: message,
+                subscribe: new Date().toISOString()
+            }, {where: {admin: false}})
+            if(updated) {
+                await Transaction.destroy({where: {}})
+            }
+            return message
 
+        } catch (e) {
+            throw new Error(e.message)
+        }
+
+    }
     async getAllUsers() {
         return await User.findAll({where: {admin: false}})
+    }
+    async changeMessageStop(data) {
+        return User.update({message_stop: data.message}, {where: {id: data.id}});
     }
 
     async refresh(token) {
@@ -105,6 +122,13 @@ class UserService {
             throw ApiError.UnauthorizedError()
         }
         return tokenService.deleteToken(token)
+    }
+    async getById(uid) {
+        if (!uid) {
+            throw ApiError.BadRequest("Некорректный id")
+        }
+        const userData = await User.findOne({where: {id: uid}})
+        return new userDto(userData)
     }
 }
 
